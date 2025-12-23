@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block title %}Study Plan Results - AI Study Pal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="text-primary">
+                    <i class="fas fa-graduation-cap me-2"></i>Your AI-Generated Study Plan
+                </h2>
+                <p class="text-muted mb-0">
+                    Subject: <strong>{{ results.last_subject }}</strong> | 
+                    Daily Hours: <strong>{{ results.last_hours }}</strong> | 
+                    Scenario: <strong>{{ results.study_plan.scenario.replace('_', ' ').title() }}</strong>
+                </p>
+            </div>
+            <div>
+                <a href="{{ url_for('download_plan') }}" class="btn btn-success">
+                    <i class="fas fa-download me-2"></i>Download CSV
+                </a>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-plus me-2"></i>New Plan
+                </a>
+            </div>
+        </div>
+
+        <!-- Study Plan Overview -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center bg-primary text-white">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <h4>{{ results.study_plan.summary.total_study_hours }}h</h4>
+                        <small>Total Weekly Hours</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-success text-white">
+                    <div class="card-body">
+                        <i class="fas fa-book fa-2x mb-2"></i>
+                        <h4>{{ results.study_plan.summary.reading_hours }}h</h4>
+                        <small>Reading Time</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-info text-white">
+                    <div class="card-body">
+                        <i class="fas fa-pencil-alt fa-2x mb-2"></i>
+                        <h4>{{ results.study_plan.summary.practice_hours }}h</h4>
+                        <small>Practice Time</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-warning text-white">
+                    <div class="card-body">
+                        <i class="fas fa-redo fa-2x mb-2"></i>
+                        <h4>{{ results.study_plan.summary.revision_hours }}h</h4>
+                        <small>Revision Time</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs for different sections -->
+        <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button">
+                    <i class="fas fa-calendar-alt me-1"></i>Weekly Schedule
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="quiz-tab" data-bs-toggle="tab" data-bs-target="#quiz" type="button">
+                    <i class="fas fa-question-circle me-1"></i>Practice Quiz
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button">
+                    <i class="fas fa-file-alt me-1"></i>Summary & Tips
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="recommendations-tab" data-bs-toggle="tab" data-bs-target="#recommendations" type="button">
+                    <i class="fas fa-lightbulb me-1"></i>Recommendations
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="resultTabsContent">
+            <!-- Weekly Schedule Tab -->
+            <div class="tab-pane fade show active" id="schedule" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-calendar-week me-2"></i>7-Day Study Schedule</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for day, schedule in results.study_plan.daily_schedules.items() %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="card border-left-primary">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-calendar-day me-2"></i>{{ day }}
+                                            <small class="text-muted">({{ schedule.date }})</small>
+                                        </h6>
+                                        <small class="text-muted">{{ schedule.planned_hours }} hours planned</small>
+                                    </div>
+                                    <div class="card-body">
+                                        {% for activity in schedule.schedule %}
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="activity-icon me-3">
+                                                {% if activity.activity == 'Reading' %}
+                                                    <i class="fas fa-book text-success"></i>
+                                                {% elif activity.activity == 'Practice' %}
+                                                    <i class="fas fa-pencil-alt text-info"></i>
+                                                {% elif activity.activity == 'Revision' %}
+                                                    <i class="fas fa-redo text-warning"></i>
+                                                {% else %}
+                                                    <i class="fas fa-coffee text-muted"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <strong>{{ activity.activity }}</strong>
+                                                <span class="badge bg-secondary ms-2">{{ activity.duration }}h</span>
+                                                <div class="small text-muted">{{ activity.description }}</div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        
+                                        <div class="mt-3">
+                                            <strong class="small">Focus Areas:</strong>
+                                            <div class="small text-muted">
+                                                {% for area in schedule.focus_areas %}
+                                                    <span class="badge bg-light text-dark me-1">{{ area }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Tab -->
+            <div class="tab-pane fade" id="quiz" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>AI-Generated Practice Quiz
+                            {% if results.quiz %}
+                                <span class="badge bg-primary">{{ results.quiz.total_questions }} Questions</span>
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if results.quiz and results.quiz.questions %}
+                            <form id="quizForm">
+                                {% for question in results.quiz.questions %}
+                                {% set question_index = loop.index0 %}
+                                <div class="question-block mb-4 p-3 border rounded">
+                                    <h6 class="question-title">
+                                        Question {{ loop.index }}
+                                        {% if question.predicted_difficulty %}
+                                            <span class="badge bg-{{ 'success' if question.predicted_difficulty == 'easy' else 'warning' if question.predicted_difficulty == 'medium' else 'danger' }}">
+                                                {{ question.predicted_difficulty.title() }}
+                                            </span>
+                                        {% endif %}
+                                    </h6>
+                                    <p class="question-text">{{ question.question }}</p>
+                                    
+                                    {% for option in question.options %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_{{ question_index }}" id="q{{ question_index }}_{{ loop.index0 }}" value="{{ loop.index0 }}">
+                                        <label class="form-check-label" for="q{{ question_index }}_{{ loop.index0 }}">
+                                            {{ option }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                                
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary" onclick="checkQuizAnswers()">
+                                        <i class="fas fa-check me-2"></i>Check Answers
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div id="quizResults" class="mt-4" style="display: none;"></div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                No quiz questions available for this subject. Try a different subject or check back later.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary & Tips Tab -->
+            <div class="tab-pane fade" id="summary" role="tabpanel">
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-file-alt me-2"></i>AI-Generated Summary</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ results.summary }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-heart me-2"></i>Motivational Feedback</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-success">
+                                    <i class="fas fa-quote-left me-2"></i>{{ results.feedback }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>NLP-Generated Study Tips</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if results.tips and results.tips.study_tips %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <ul class="list-group list-group-flush">
+                                        {% for tip in results.tips.study_tips %}
+                                        <li class="list-group-item border-0 px-0">
+                                            <i class="fas fa-check-circle text-success me-2"></i>{{ tip }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Key Topics Identified:</h6>
+                                    {% for keyword in results.tips.keywords_extracted[:5] %}
+                                        <span class="badge bg-primary me-1 mb-1">{{ keyword }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Tab -->
+            <div class="tab-pane fade" id="recommendations" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-star me-2"></i>Personalized Study Recommendations</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if results.study_plan.recommendations %}
+                            <div class="row">
+                                {% for recommendation in results.study_plan.recommendations %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-left-success h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start">
+                                                <i class="fas fa-arrow-right text-success me-3 mt-1"></i>
+                                                <p class="mb-0">{{ recommendation }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="alert alert-info mt-4">
+                            <h6><i class="fas fa-info-circle me-2"></i>Study Success Tips:</h6>
+                            <ul class="mb-0">
+                                <li>Stick to your schedule consistently for best results</li>
+                                <li>Take regular breaks to maintain focus and avoid burnout</li>
+                                <li>Track your progress and adjust the plan as needed</li>
+                                <li>Use active learning techniques during practice sessions</li>
+                                <li>Review and revise regularly to reinforce learning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function checkQuizAnswers() {
+    const form = document.getElementById('quizForm');
+    const formData = new FormData(form);
+    const answers = {};
+    
+    // Collect answers
+    for (let [key, value] of formData.entries()) {
+        const questionIndex = key.split('_')[1];
+        answers[questionIndex] = value;
+    }
+    
+    // Send to server for checking
+    fetch('/api/quiz_check', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({answers: answers})
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayQuizResults(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error checking answers. Please try again.');
+    });
+}
+
+function displayQuizResults(data) {
+    const resultsDiv = document.getElementById('quizResults');
+    const scorePercentage = Math.round(data.score * 100);
+    
+    let html = `
+        <div class="alert alert-${scorePercentage >= 70 ? 'success' : scorePercentage >= 50 ? 'warning' : 'danger'}">
+            <h5><i class="fas fa-chart-bar me-2"></i>Quiz Results</h5>
+            <p class="mb-0">
+                Score: ${data.correct_count}/${data.total_questions} (${scorePercentage}%)
+            </p>
+        </div>
+        
+        <div class="results-breakdown">
+            <h6>Answer Breakdown:</h6>
+    `;
+    
+    data.results.forEach((result, index) => {
+        const icon = result.is_correct ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
+        html += `
+            <div class="d-flex align-items-center mb-2">
+                <i class="${icon} me-2"></i>
+                <span>Question ${index + 1}: ${result.is_correct ? 'Correct' : 'Incorrect'}</span>
+                ${!result.is_correct ? `<small class="text-muted ms-2">(Correct answer: ${result.correct_option})</small>` : ''}
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    
+    resultsDiv.innerHTML = html;
+    resultsDiv.style.display = 'block';
+    
+    // Scroll to results
+    resultsDiv.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+{% endblock %}

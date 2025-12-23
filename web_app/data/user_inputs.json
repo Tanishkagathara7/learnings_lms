@@ -1,0 +1,47 @@
+[
+  {
+    "subject": "Mathematics",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T08:42:36.582474"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T08:44:28.547767"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T08:44:59.625839"
+  },
+  {
+    "subject": "Physics",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T09:00:12.828366"
+  },
+  {
+    "subject": "chemistry",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T09:23:16.857047"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 3.0,
+    "timestamp": "2025-12-23T09:24:29.078554"
+  },
+  {
+    "subject": "Computer Science",
+    "study_hours": 2.0,
+    "timestamp": "2025-12-23T09:28:40.177142"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 8.0,
+    "timestamp": "2025-12-23T11:27:22.282351"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 4.0,
+    "timestamp": "2025-12-23T13:05:56.487358"
+  }
+]

@@ -1,0 +1,29 @@
+Day,Date,Activity_Order,Activity,Duration_Hours,Description,Tips,Focus_Areas
+Monday,2025-12-23,1,Reading,1.0,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Mechanics; Newton's laws
+Monday,2025-12-23,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Mechanics; Newton's laws
+Monday,2025-12-23,3,Practice,1.0,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Mechanics; Newton's laws
+Monday,2025-12-23,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Mechanics; Newton's laws
+Tuesday,2025-12-24,1,Reading,1.0,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Energy and momentum; Work and power
+Tuesday,2025-12-24,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Energy and momentum; Work and power
+Tuesday,2025-12-24,3,Practice,1.0,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Energy and momentum; Work and power
+Tuesday,2025-12-24,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Energy and momentum; Work and power
+Wednesday,2025-12-25,1,Reading,1.0,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Waves and oscillations; Sound
+Wednesday,2025-12-25,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Waves and oscillations; Sound
+Wednesday,2025-12-25,3,Practice,1.0,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Waves and oscillations; Sound
+Wednesday,2025-12-25,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Waves and oscillations; Sound
+Thursday,2025-12-26,1,Reading,1.0,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Electricity and magnetism; Circuits
+Thursday,2025-12-26,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Electricity and magnetism; Circuits
+Thursday,2025-12-26,3,Practice,1.0,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Electricity and magnetism; Circuits
+Thursday,2025-12-26,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Electricity and magnetism; Circuits
+Friday,2025-12-27,1,Reading,1.0,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Thermodynamics; Heat transfer
+Friday,2025-12-27,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Thermodynamics; Heat transfer
+Friday,2025-12-27,3,Practice,1.0,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Thermodynamics; Heat transfer
+Friday,2025-12-27,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Thermodynamics; Heat transfer
+Saturday,2025-12-28,1,Reading,0.5,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Problem-solving; Laboratory concepts
+Saturday,2025-12-28,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Problem-solving; Laboratory concepts
+Saturday,2025-12-28,3,Practice,0.5,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Problem-solving; Laboratory concepts
+Saturday,2025-12-28,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Problem-solving; Laboratory concepts
+Sunday,2025-12-29,1,Reading,0.5,Read Physics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Review and integration; Conceptual understanding
+Sunday,2025-12-29,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Review and integration; Conceptual understanding
+Sunday,2025-12-29,3,Practice,0.5,Solve Physics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Review and integration; Conceptual understanding
+Sunday,2025-12-29,4,Revision,0.5,Review and consolidate Physics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Review and integration; Conceptual understanding

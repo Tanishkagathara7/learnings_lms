@@ -1,0 +1,36 @@
+Day,Date,Activity_Order,Activity,Duration_Hours,Description,Tips,Focus_Areas
+Monday,2025-12-23,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Algebra fundamentals; Linear equations
+Monday,2025-12-23,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Algebra fundamentals; Linear equations
+Monday,2025-12-23,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Algebra fundamentals; Linear equations
+Monday,2025-12-23,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Algebra fundamentals; Linear equations
+Monday,2025-12-23,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Algebra fundamentals; Linear equations
+Tuesday,2025-12-24,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Geometry concepts; Area and volume
+Tuesday,2025-12-24,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Geometry concepts; Area and volume
+Tuesday,2025-12-24,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Geometry concepts; Area and volume
+Tuesday,2025-12-24,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Geometry concepts; Area and volume
+Tuesday,2025-12-24,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Geometry concepts; Area and volume
+Wednesday,2025-12-25,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Calculus basics; Derivatives
+Wednesday,2025-12-25,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Calculus basics; Derivatives
+Wednesday,2025-12-25,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Calculus basics; Derivatives
+Wednesday,2025-12-25,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Calculus basics; Derivatives
+Wednesday,2025-12-25,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Calculus basics; Derivatives
+Thursday,2025-12-26,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Statistics; Probability
+Thursday,2025-12-26,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Statistics; Probability
+Thursday,2025-12-26,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Statistics; Probability
+Thursday,2025-12-26,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Statistics; Probability
+Thursday,2025-12-26,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Statistics; Probability
+Friday,2025-12-27,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Problem-solving practice; Mixed exercises
+Friday,2025-12-27,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Problem-solving practice; Mixed exercises
+Friday,2025-12-27,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Problem-solving practice; Mixed exercises
+Friday,2025-12-27,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Problem-solving practice; Mixed exercises
+Friday,2025-12-27,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Problem-solving practice; Mixed exercises
+Saturday,2025-12-28,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Review weak areas; Practice tests
+Saturday,2025-12-28,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Review weak areas; Practice tests
+Saturday,2025-12-28,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Review weak areas; Practice tests
+Saturday,2025-12-28,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Review weak areas; Practice tests
+Saturday,2025-12-28,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Review weak areas; Practice tests
+Sunday,2025-12-29,1,Reading,0.5,Read Mathematics theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Comprehensive review; Prepare for next week
+Sunday,2025-12-29,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Comprehensive review; Prepare for next week
+Sunday,2025-12-29,3,Practice,1.5,Solve Mathematics problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Comprehensive review; Prepare for next week
+Sunday,2025-12-29,4,Break,0.25,Medium break - refresh mind,Get fresh air if possible; Have a healthy snack,Comprehensive review; Prepare for next week
+Sunday,2025-12-29,5,Revision,1.0,Review and consolidate Mathematics learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Comprehensive review; Prepare for next week

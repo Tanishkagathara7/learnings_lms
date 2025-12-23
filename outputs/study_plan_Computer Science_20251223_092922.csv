@@ -1,0 +1,29 @@
+Day,Date,Activity_Order,Activity,Duration_Hours,Description,Tips,Focus_Areas
+Monday,2025-12-23,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Programming fundamentals; Syntax and logic
+Monday,2025-12-23,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Programming fundamentals; Syntax and logic
+Monday,2025-12-23,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Programming fundamentals; Syntax and logic
+Monday,2025-12-23,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Programming fundamentals; Syntax and logic
+Tuesday,2025-12-24,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Data structures; Arrays and lists
+Tuesday,2025-12-24,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Data structures; Arrays and lists
+Tuesday,2025-12-24,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Data structures; Arrays and lists
+Tuesday,2025-12-24,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Data structures; Arrays and lists
+Wednesday,2025-12-25,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Algorithms; Sorting and searching
+Wednesday,2025-12-25,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Algorithms; Sorting and searching
+Wednesday,2025-12-25,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Algorithms; Sorting and searching
+Wednesday,2025-12-25,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Algorithms; Sorting and searching
+Thursday,2025-12-26,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Object-oriented programming; Classes and objects
+Thursday,2025-12-26,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Object-oriented programming; Classes and objects
+Thursday,2025-12-26,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Object-oriented programming; Classes and objects
+Thursday,2025-12-26,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Object-oriented programming; Classes and objects
+Friday,2025-12-27,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Database concepts; SQL basics
+Friday,2025-12-27,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Database concepts; SQL basics
+Friday,2025-12-27,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Database concepts; SQL basics
+Friday,2025-12-27,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Database concepts; SQL basics
+Saturday,2025-12-28,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Project work; Coding practice
+Saturday,2025-12-28,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Project work; Coding practice
+Saturday,2025-12-28,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Project work; Coding practice
+Saturday,2025-12-28,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Project work; Coding practice
+Sunday,2025-12-29,1,Reading,0.5,Read Computer Science theory and concepts,Take notes while reading; Highlight key concepts; Ask questions about unclear topics,Code review; Debugging and testing
+Sunday,2025-12-29,2,Break,0.25,"Short break - stretch, hydrate",Step away from study area; Do light physical activity,Code review; Debugging and testing
+Sunday,2025-12-29,3,Practice,1.0,Solve Computer Science problems and exercises,Start with easier problems; Time yourself; Check solutions carefully,Code review; Debugging and testing
+Sunday,2025-12-29,4,Revision,0.5,Review and consolidate Computer Science learning,Summarize key points; Test yourself; Connect new concepts with previous knowledge,Code review; Debugging and testing

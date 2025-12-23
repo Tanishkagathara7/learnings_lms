@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}AI Study Pal - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="fas fa-brain me-3"></i>AI Study Pal
+            </h1>
+            <p class="lead text-muted">
+                Your intelligent study companion powered by Machine Learning, Deep Learning, and NLP
+            </p>
+        </div>
+
+        <!-- Features Overview -->
+        <div class="row mb-5">
+            <div class="col-md-4 text-center mb-3">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
+                </div>
+                <h5>Smart Study Plans</h5>
+                <p class="text-muted">AI-generated personalized study schedules</p>
+            </div>
+            <div class="col-md-4 text-center mb-3">
+                <div class="feature-icon">
+                    <i class="fas fa-question-circle fa-3x text-success mb-3"></i>
+                </div>
+                <h5>Intelligent Quizzes</h5>
+                <p class="text-muted">ML-powered quiz generation and difficulty assessment</p>
+            </div>
+            <div class="col-md-4 text-center mb-3">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
+                </div>
+                <h5>Study Tips</h5>
+                <p class="text-muted">NLP-based contextual learning recommendations</p>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-rocket me-2"></i>Get Started with Your AI Study Assistant
+                </h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('process_study_request') }}" method="POST" id="studyForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-book me-1"></i>Subject
+                            </label>
+                            <select class="form-select" 
+                                    id="subject" 
+                                    name="subject" 
+                                    required>
+                                <option value="">Choose a subject...</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Biology">Biology</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="English">English</option>
+                                <option value="History">History</option>
+                                <option value="Economics">Economics</option>
+                                <option value="Psychology">Psychology</option>
+                                <option value="Geography">Geography</option>
+                            </select>
+                            <div class="form-text">Select the subject you want to study</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="study_hours" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Daily Study Hours
+                            </label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="study_hours" 
+                                   name="study_hours" 
+                                   min="0.5" 
+                                   max="12" 
+                                   step="0.5" 
+                                   value="2"
+                                   required>
+                            <div class="form-text">How many hours per day can you study?</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="scenario" class="form-label">
+                            <i class="fas fa-target me-1"></i>Study Scenario
+                        </label>
+                        <select class="form-select" id="scenario" name="scenario">
+                            <option value="general_study">General Study</option>
+                            <option value="exam_prep">Exam Preparation</option>
+                            <option value="homework">Homework Help</option>
+                            <option value="project_work">Project Work</option>
+                        </select>
+                        <div class="form-text">Choose your study context for optimized planning</div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
+                            <i class="fas fa-magic me-2"></i>Generate AI Study Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Technology Stack Info -->
+        <div class="mt-5">
+            <div class="card border-0 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="fas fa-cogs me-2"></i>Powered by Advanced AI Technologies
+                    </h5>
+                    <div class="row text-center">
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="tech-badge">
+                                <i class="fab fa-python fa-2x text-primary mb-2"></i>
+                                <div class="small">Python</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="tech-badge">
+                                <i class="fas fa-robot fa-2x text-success mb-2"></i>
+                                <div class="small">Machine Learning</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="tech-badge">
+                                <i class="fas fa-network-wired fa-2x text-info mb-2"></i>
+                                <div class="small">Deep Learning</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="tech-badge">
+                                <i class="fas fa-language fa-2x text-warning mb-2"></i>
+                                <div class="small">NLP</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5>Generating Your AI Study Plan...</h5>
+                <p class="text-muted mb-0">
+                    Our AI is analyzing your requirements and creating personalized content
+                </p>
+                <div class="progress mt-3">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('studyForm').addEventListener('submit', function(e) {
+    // Show loading modal
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    loadingModal.show();
+    
+    // Disable submit button
+    document.getElementById('generateBtn').disabled = true;
+});
+</script>
+{% endblock %}

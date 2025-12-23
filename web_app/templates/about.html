@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+{% block title %}About - AI Study Pal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="fas fa-info-circle me-3"></i>About AI Study Pal
+            </h1>
+            <p class="lead text-muted">
+                A comprehensive AI-powered study assistant demonstrating cutting-edge technologies
+            </p>
+        </div>
+
+        <!-- Project Overview -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-project-diagram me-2"></i>Project Overview</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    AI Study Pal is a production-ready, academically credible AI Study Assistant web application 
+                    that demonstrates the integration of Python, Machine Learning, Deep Learning, NLP, and Web 
+                    Deployment in an educational context. The system is designed to align with Artificial 
+                    Intelligence course curriculum requirements while providing practical, usable functionality.
+                </p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-target me-2"></i>Core Objectives</h6>
+                        <ul>
+                            <li>Demonstrate AI concepts in practical applications</li>
+                            <li>Use explainable, beginner-friendly models</li>
+                            <li>Provide realistic, text-based outputs</li>
+                            <li>Ensure academic credibility and reproducibility</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-check-circle me-2"></i>Key Features</h6>
+                        <ul>
+                            <li>Intelligent study plan generation</li>
+                            <li>ML-powered quiz creation and assessment</li>
+                            <li>NLP-based study tips and recommendations</li>
+                            <li>Deep learning text summarization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-cogs me-2"></i>Technology Stack</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fab fa-python me-2"></i>Core Technologies</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Language:</strong> Python 3.10+</li>
+                            <li><strong>Web Framework:</strong> Flask</li>
+                            <li><strong>Data Processing:</strong> Pandas, NumPy</li>
+                            <li><strong>Visualization:</strong> Matplotlib, Seaborn</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-robot me-2"></i>AI/ML Libraries</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Machine Learning:</strong> scikit-learn</li>
+                            <li><strong>Deep Learning:</strong> TensorFlow/Keras</li>
+                            <li><strong>NLP:</strong> NLTK</li>
+                            <li><strong>Environment:</strong> Anaconda/Jupyter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Architecture -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="fas fa-sitemap me-2"></i>Module Architecture</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-database me-2"></i>Data Processing</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Educational content dataset</li>
+                                    <li>Data cleaning and preprocessing</li>
+                                    <li>Exploratory Data Analysis (EDA)</li>
+                                    <li>User input management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-success">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-brain me-2"></i>Machine Learning</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Logistic Regression for difficulty classification</li>
+                                    <li>K-Means clustering for resource suggestions</li>
+                                    <li>Quiz generation system</li>
+                                    <li>Model evaluation and metrics</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-warning">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-network-wired me-2"></i>Deep Learning</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Neural networks with Keras</li>
+                                    <li>Text summarization</li>
+                                    <li>Embedding layers</li>
+                                    <li>Motivational feedback generation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-danger">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-language me-2"></i>NLP Processing</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Text tokenization and preprocessing</li>
+                                    <li>Keyword extraction</li>
+                                    <li>POS tagging and NER</li>
+                                    <li>Contextual study tips generation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-secondary">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Study Planning</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Intelligent schedule generation</li>
+                                    <li>Time distribution optimization</li>
+                                    <li>Scenario-based planning</li>
+                                    <li>CSV export functionality</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-dark">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-globe me-2"></i>Web Application</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="small mb-0">
+                                    <li>Flask-based web interface</li>
+                                    <li>Responsive Bootstrap design</li>
+                                    <li>Interactive quiz functionality</li>
+                                    <li>Downloadable study plans</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Alignment -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Academic Alignment</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-book me-2"></i>Curriculum Coverage</h6>
+                        <ul>
+                            <li><strong>Python Programming:</strong> Clean, modular, commented code</li>
+                            <li><strong>Machine Learning:</strong> Classification and clustering algorithms</li>
+                            <li><strong>Deep Learning:</strong> Neural networks with TensorFlow/Keras</li>
+                            <li><strong>NLP:</strong> Text processing and analysis with NLTK</li>
+                            <li><strong>Web Development:</strong> Full-stack application deployment</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-chart-line me-2"></i>Evaluation Metrics</h6>
+                        <ul>
+                            <li><strong>ML Models:</strong> Accuracy, F1-Score, Classification Reports</li>
+                            <li><strong>DL Models:</strong> Training history and loss curves</li>
+                            <li><strong>NLP Analysis:</strong> Keyword extraction and text statistics</li>
+                            <li><strong>Web App:</strong> User experience and functionality testing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Installation & Usage -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0"><i class="fas fa-download me-2"></i>Installation & Usage</h4>
+            </div>
+            <div class="card-body">
+                <h6><i class="fas fa-terminal me-2"></i>Quick Start</h6>
+                <pre class="bg-light p-3 rounded"><code># Clone the repository
+git clone &lt;repository-url&gt;
+cd ai-study-pal
+
+# Create conda environment
+conda create -n ai-study-pal python=3.10
+conda activate ai-study-pal
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the web application
+cd web_app
+python app.py</code></pre>
+                
+                <div class="alert alert-info mt-3">
+                    <h6><i class="fas fa-info-circle me-2"></i>System Requirements</h6>
+                    <ul class="mb-0">
+                        <li>Python 3.10 or higher</li>
+                        <li>Anaconda or Miniconda</li>
+                        <li>At least 4GB RAM for model training</li>
+                        <li>Modern web browser for the interface</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Structure -->
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="fas fa-folder-tree me-2"></i>Project Structure</h4>
+            </div>
+            <div class="card-body">
+                <pre class="bg-light p-3 rounded small"><code>ai-study-pal/
+├── data/                    # Datasets and raw data
+│   ├── educational_content.csv
+│   └── user_inputs.json
+├── models/                  # Trained ML/DL models
+│   ├── difficulty_classifier.pkl
+│   ├── clustering_model.pkl
+│   └── summarization_model.h5
+├── notebooks/              # Jupyter notebooks for development
+├── src/                    # Source code modules
+│   ├── data_preprocessing.py
+│   ├── ml_quiz_generator.py
+│   ├── dl_text_processor.py
+│   ├── nlp_study_tips.py
+│   └── study_planner.py
+├── web_app/               # Flask web application
+│   ├── app.py
+│   ├── templates/
+│   └── static/
+├── outputs/               # Generated outputs and results
+├── requirements.txt       # Python dependencies
+└── README.md             # Project documentation</code></pre>
+            </div>
+        </div>
+
+        <!-- Contact & Credits -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-users me-2"></i>Credits & Contact</h4>
+            </div>
+            <div class="card-body">
+                <p>
+                    This project was developed as an academic demonstration of AI technologies in educational applications. 
+                    It showcases the integration of multiple AI disciplines in a practical, user-friendly web application.
+                </p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-code me-2"></i>Technologies Used</h6>
+                        <p class="small text-muted">
+                            Python, Flask, scikit-learn, TensorFlow, Keras, NLTK, Pandas, NumPy, 
+                            Matplotlib, Bootstrap, HTML5, CSS3, JavaScript
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-calendar me-2"></i>Development Timeline</h6>
+                        <p class="small text-muted">
+                            This project represents a comprehensive implementation suitable for 
+                            academic submission and real-world educational use.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
