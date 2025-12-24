@@ -68,6 +68,21 @@ pip install -r requirements.txt
 # If you encounter issues, try upgrading pip first:
 pip install --upgrade pip
 pip install -r requirements.txt
+
+# 🚨 HAVING INSTALLATION ISSUES? 
+# Try these alternatives:
+
+# Option A: Use flexible requirements (recommended)
+pip install -r requirements-flexible.txt
+
+# Option B: For Anaconda users (like the error you showed)
+conda install pandas numpy matplotlib seaborn scikit-learn jupyter requests
+pip install flask nltk beautifulsoup4 tensorflow-cpu
+
+# Option C: Run the automated troubleshooter
+python fix_installation.py
+
+# Option D: See QUICK_FIX.md for your specific error
 ```
 
 ### Step 5: Download NLTK Data

@@ -1,0 +1,17 @@
+# AI Study Pal - Conda Environment Requirements
+# Use this with: conda install --file requirements-conda.txt
+
+# Core packages available through conda
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+flask
+jupyter
+notebook
+requests
+beautifulsoup4
+
+# Install these via pip after conda packages:
+# pip install tensorflow nltk

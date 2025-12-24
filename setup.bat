@@ -14,19 +14,27 @@ if %errorlevel% neq 0 (
 echo ✅ Python found
 echo.
 
-echo 🔄 Installing dependencies...
-pip install --upgrade pip
+echo 🔄 Upgrading pip...
+python -m pip install --upgrade pip
+
+echo.
+echo 🔄 Attempting to install dependencies...
+echo 📦 Trying standard requirements first...
 pip install -r requirements.txt
 
 if %errorlevel% neq 0 (
-    echo ❌ Failed to install dependencies
-    pause
-    exit /b 1
+    echo ⚠️ Standard installation failed. Trying flexible requirements...
+    pip install -r requirements-flexible.txt
+    
+    if %errorlevel% neq 0 (
+        echo ⚠️ Flexible installation also failed. Running troubleshooter...
+        python fix_installation.py
+    )
 )
 
 echo.
 echo 🔄 Downloading NLTK data...
-python -c "import nltk; nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('averaged_perceptron_tagger_eng'); nltk.download('wordnet')"
+python -c "import nltk; nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('averaged_perceptron_tagger_eng'); nltk.download('wordnet')" 2>nul
 
 echo.
 echo 🧪 Running tests...
@@ -42,8 +50,10 @@ if %errorlevel% equ 0 (
     echo 3. Open http://127.0.0.1:5000 in your browser
 ) else (
     echo.
-    echo ⚠️ Some tests failed, but you can still try running the application
+    echo ⚠️ Some tests failed. Try running: python fix_installation.py
+    echo Or manually install packages: pip install pandas numpy matplotlib flask tensorflow nltk
 )
 
 echo.
+echo 💡 If you're still having issues, check INSTALLATION_GUIDE.md for detailed troubleshooting
 pause

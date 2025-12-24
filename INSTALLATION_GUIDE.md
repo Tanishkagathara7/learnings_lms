@@ -115,7 +115,42 @@ python app.py
 
 Open your browser and go to: **http://127.0.0.1:5000**
 
-## 🔧 Troubleshooting Common Issues
+## 🚨 SPECIFIC FIX FOR YOUR ERROR
+
+**Your error shows Anaconda + Network timeout + Build dependencies failure. Here's the exact solution:**
+
+### Quick Fix (Recommended)
+```bash
+# 1. Use conda for scientific packages (avoids compilation)
+conda install pandas numpy matplotlib seaborn scikit-learn jupyter requests
+
+# 2. Use pip for remaining packages
+pip install flask nltk beautifulsoup4
+
+# 3. Try TensorFlow (if it fails, use CPU version)
+pip install tensorflow
+# If TensorFlow fails:
+pip install tensorflow-cpu
+
+# 4. Download NLTK data
+python -c "import nltk; nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('averaged_perceptron_tagger_eng'); nltk.download('wordnet')"
+
+# 5. Test everything
+python test_all_modules.py
+```
+
+### Alternative: Use Flexible Requirements
+```bash
+# Instead of requirements.txt, use:
+pip install -r requirements-flexible.txt
+```
+
+### Last Resort: Run Troubleshooter
+```bash
+python fix_installation.py
+```
+
+## 🔧 Troubleshooting All Common Issues
 
 ### Issue 1: "python is not recognized"
 **Solution**: 
