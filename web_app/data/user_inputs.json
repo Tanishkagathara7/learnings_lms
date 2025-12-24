@@ -43,5 +43,24 @@
     "subject": "Mathematics",
     "study_hours": 4.0,
     "timestamp": "2025-12-23T13:05:56.487358"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 3.0,
+    "selected_topics": [
+      "Algebra",
+      "Quadratic Equations",
+      "Pythagoras Theorem"
+    ],
+    "timestamp": "2025-12-23T19:58:29.651141"
+  },
+  {
+    "subject": "Physics",
+    "study_hours": 2.0,
+    "selected_topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "timestamp": "2025-12-23T20:01:29.107322"
   }
 ]

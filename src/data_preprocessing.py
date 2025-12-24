@@ -138,11 +138,17 @@ class DataPreprocessor:
             'avg_word_count': word_counts.mean()
         }
     
-    def save_user_input(self, subject, study_hours, filename='data/user_inputs.json'):
+    def save_user_input(self, subject, study_hours, selected_topics=None, filename=None):
         """Save user inputs to JSON file"""
+        if filename is None:
+            # Use absolute path to ensure it works from any directory
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            filename = os.path.join(base_dir, 'data', 'user_inputs.json')
+            
         user_data = {
             'subject': subject,
             'study_hours': study_hours,
+            'selected_topics': selected_topics or [],
             'timestamp': pd.Timestamp.now().isoformat()
         }
         

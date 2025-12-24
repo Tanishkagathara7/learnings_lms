@@ -54,6 +54,7 @@ def process_study_request():
         subject = request.form.get('subject', '').strip()
         study_hours = float(request.form.get('study_hours', 2))
         scenario = request.form.get('scenario', 'general_study')
+        selected_topics = request.form.getlist('topics')  # Get selected topics
         
         if not subject:
             return jsonify({'error': 'Please enter a subject'}), 400
@@ -64,20 +65,22 @@ def process_study_request():
         # Store inputs
         app_results['last_subject'] = subject
         app_results['last_hours'] = study_hours
+        app_results['selected_topics'] = selected_topics
         
-        # Save user input
-        data_processor.save_user_input(subject, study_hours)
+        # Save user input with topics
+        data_processor.save_user_input(subject, study_hours, selected_topics)
         
         # Load and process educational data
         data_processor.load_data()
         cleaned_data = data_processor.preprocess_data()
         subject_content = data_processor.get_subject_content(subject)
         
-        # 1. Generate Study Plan
+        # 1. Generate Study Plan with topics
         study_plan = study_planner.create_comprehensive_plan(
             subject=subject,
             daily_hours=study_hours,
-            scenario=scenario
+            scenario=scenario,
+            selected_topics=selected_topics
         )
         app_results['study_plan'] = study_plan
         
