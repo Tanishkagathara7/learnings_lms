@@ -181,6 +181,11 @@ class DataPreprocessor:
         
         print("📊 Performing comprehensive EDA...")
         
+        # Set matplotlib backend for web compatibility
+        import matplotlib
+        matplotlib.use('Agg')  # Use non-interactive backend
+        import matplotlib.pyplot as plt
+        
         # Calculate statistics
         subject_counts = self.cleaned_data['subject'].value_counts()
         topic_counts = self.cleaned_data.groupby('subject')['topic'].nunique()
@@ -189,17 +194,17 @@ class DataPreprocessor:
         
         # Create comprehensive visualization
         plt.style.use('default')
-        fig = plt.figure(figsize=(16, 12))
+        fig = plt.figure(figsize=(15, 10))
         
         # Subplot 1: Subject distribution pie chart
-        plt.subplot(3, 3, 1)
+        plt.subplot(2, 4, 1)
         colors = plt.cm.Set3(np.linspace(0, 1, len(subject_counts)))
         wedges, texts, autotexts = plt.pie(subject_counts.values, labels=subject_counts.index, 
                                           autopct='%1.1f%%', colors=colors, startangle=90)
         plt.title('Subject Distribution', fontsize=14, fontweight='bold')
         
         # Subplot 2: Topic count per subject
-        plt.subplot(3, 3, 2)
+        plt.subplot(2, 4, 2)
         bars = plt.bar(topic_counts.index, topic_counts.values, color=colors[:len(topic_counts)])
         plt.title('Topics per Subject', fontsize=14, fontweight='bold')
         plt.xlabel('Subject')
@@ -213,7 +218,7 @@ class DataPreprocessor:
                     f'{int(height)}', ha='center', va='bottom')
         
         # Subplot 3: Text length distribution
-        plt.subplot(3, 3, 3)
+        plt.subplot(2, 4, 3)
         plt.hist(text_lengths, bins=20, color='skyblue', alpha=0.7, edgecolor='black')
         plt.axvline(text_lengths.mean(), color='red', linestyle='--', 
                    label=f'Mean: {text_lengths.mean():.0f}')
@@ -223,7 +228,7 @@ class DataPreprocessor:
         plt.legend()
         
         # Subplot 4: Word count distribution
-        plt.subplot(3, 3, 4)
+        plt.subplot(2, 4, 4)
         plt.hist(word_counts, bins=20, color='lightcoral', alpha=0.7, edgecolor='black')
         plt.axvline(word_counts.mean(), color='red', linestyle='--',
                    label=f'Mean: {word_counts.mean():.1f}')
@@ -233,7 +238,7 @@ class DataPreprocessor:
         plt.legend()
         
         # Subplot 5: Subject vs Average Text Length
-        plt.subplot(3, 3, 5)
+        plt.subplot(2, 4, 5)
         avg_lengths = self.cleaned_data.groupby('subject')['text_content_cleaned'].apply(lambda x: x.str.len().mean())
         bars = plt.bar(avg_lengths.index, avg_lengths.values, color='lightgreen', alpha=0.7)
         plt.title('Average Text Length by Subject', fontsize=14, fontweight='bold')
@@ -247,30 +252,16 @@ class DataPreprocessor:
             plt.text(bar.get_x() + bar.get_width()/2., height + 5,
                     f'{int(height)}', ha='center', va='bottom')
         
-        # Subplot 6: Data source distribution (if available)
-        plt.subplot(3, 3, 6)
-        if 'source' in self.cleaned_data.columns:
-            source_counts = self.cleaned_data['source'].value_counts()
-            plt.pie(source_counts.values, labels=source_counts.index, autopct='%1.1f%%',
-                   colors=['lightblue', 'lightcoral'], startangle=90)
-            plt.title('Data Source Distribution', fontsize=14, fontweight='bold')
-        else:
-            plt.text(0.5, 0.5, 'No source\ninformation\navailable', 
-                    ha='center', va='center', transform=plt.gca().transAxes,
-                    fontsize=12, bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray"))
-            plt.title('Data Source Distribution', fontsize=14, fontweight='bold')
-            plt.axis('off')
-        
-        # Subplot 7: Text complexity analysis (sentence count)
-        plt.subplot(3, 3, 7)
+        # Subplot 6: Text complexity analysis (sentence count)
+        plt.subplot(2, 4, 6)
         sentence_counts = self.cleaned_data['text_content_cleaned'].str.count(r'[.!?]+')
         plt.hist(sentence_counts, bins=15, color='gold', alpha=0.7, edgecolor='black')
         plt.title('Sentence Count Distribution', fontsize=14, fontweight='bold')
         plt.xlabel('Number of Sentences')
         plt.ylabel('Frequency')
         
-        # Subplot 8: Most common words analysis
-        plt.subplot(3, 3, 8)
+        # Subplot 7: Most common words analysis
+        plt.subplot(2, 4, 7)
         all_text = ' '.join(self.cleaned_data['text_content_cleaned'])
         words = re.findall(r'\b\w+\b', all_text.lower())
         # Filter out common stop words
@@ -289,36 +280,37 @@ class DataPreprocessor:
             plt.xlabel('Frequency')
             plt.gca().invert_yaxis()
         
-        # Subplot 9: Data collection timeline (if available)
-        plt.subplot(3, 3, 9)
-        if 'collected_date' in self.cleaned_data.columns:
-            try:
-                dates = pd.to_datetime(self.cleaned_data['collected_date'])
-                dates.hist(bins=10, color='lightsteelblue', alpha=0.7, edgecolor='black')
-                plt.title('Data Collection Timeline', fontsize=14, fontweight='bold')
-                plt.xlabel('Collection Date')
-                plt.ylabel('Number of Records')
-                plt.xticks(rotation=45)
-            except:
-                plt.text(0.5, 0.5, 'Timeline data\nnot available', 
-                        ha='center', va='center', transform=plt.gca().transAxes,
-                        fontsize=12, bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray"))
-                plt.axis('off')
-        else:
-            plt.text(0.5, 0.5, 'Timeline data\nnot available', 
-                    ha='center', va='center', transform=plt.gca().transAxes,
-                    fontsize=12, bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray"))
-            plt.title('Data Collection Timeline', fontsize=14, fontweight='bold')
-            plt.axis('off')
+        # Subplot 8: Subject-wise word count comparison
+        plt.subplot(2, 4, 8)
+        avg_word_counts = self.cleaned_data.groupby('subject')['text_content_cleaned'].apply(lambda x: x.str.split().str.len().mean())
+        bars = plt.bar(avg_word_counts.index, avg_word_counts.values, color='lightsteelblue', alpha=0.7)
+        plt.title('Average Word Count by Subject', fontsize=14, fontweight='bold')
+        plt.xlabel('Subject')
+        plt.ylabel('Average Word Count')
+        plt.xticks(rotation=45)
+        
+        # Add value labels
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height + 1,
+                    f'{int(height)}', ha='center', va='bottom')
         
         plt.tight_layout()
         
         if save_plots:
             os.makedirs('outputs', exist_ok=True)
+            
+            # Remove old image file to force regeneration
+            old_image_path = 'outputs/comprehensive_data_analysis.png'
+            if os.path.exists(old_image_path):
+                os.remove(old_image_path)
+                print("✓ Removed old analytics image")
+            
             plt.savefig('outputs/comprehensive_data_analysis.png', dpi=300, bbox_inches='tight')
             print("✓ Comprehensive EDA visualization saved to outputs/comprehensive_data_analysis.png")
         
-        plt.show()
+        # Close the figure to free memory
+        plt.close(fig)
         
         # Print detailed summary statistics
         print("\n📊 Comprehensive Dataset Summary:")
@@ -411,6 +403,11 @@ class DataPreprocessor:
                 return None
             
             print("📈 Analyzing user behavior patterns...")
+            
+            # Set matplotlib backend for web compatibility
+            import matplotlib
+            matplotlib.use('Agg')  # Use non-interactive backend
+            import matplotlib.pyplot as plt
             
             # Create behavior analysis visualization
             plt.figure(figsize=(15, 10))
@@ -519,7 +516,9 @@ User Engagement Metrics:
             os.makedirs('outputs', exist_ok=True)
             plt.savefig('outputs/user_behavior_analysis.png', dpi=300, bbox_inches='tight')
             print("✓ User behavior analysis saved to outputs/user_behavior_analysis.png")
-            plt.show()
+            
+            # Close the figure to free memory
+            plt.close()
             
             # Generate insights
             insights = {

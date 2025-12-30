@@ -36,6 +36,12 @@ class QuizGenerator:
                         'difficulty': 'easy'
                     },
                     {
+                        'question': 'Solve for x: 3x - 7 = 14',
+                        'options': ['x = 5', 'x = 7', 'x = 9', 'x = 11'],
+                        'correct': 1,
+                        'difficulty': 'easy'
+                    },
+                    {
                         'question': 'Which property allows us to write a(b + c) = ab + ac?',
                         'options': ['Commutative', 'Associative', 'Distributive', 'Identity'],
                         'correct': 2,
@@ -46,6 +52,12 @@ class QuizGenerator:
                         'options': ['1', '2', '3', '4'],
                         'correct': 1,
                         'difficulty': 'medium'
+                    },
+                    {
+                        'question': 'Solve the quadratic equation x² - 5x + 6 = 0',
+                        'options': ['x = 1, 6', 'x = 2, 3', 'x = -2, -3', 'x = 0, 5'],
+                        'correct': 1,
+                        'difficulty': 'hard'
                     }
                 ],
                 'Calculus': [
@@ -56,11 +68,23 @@ class QuizGenerator:
                         'difficulty': 'easy'
                     },
                     {
+                        'question': 'What is the integral of 2x?',
+                        'options': ['x²', 'x² + C', '2', '2x + C'],
+                        'correct': 1,
+                        'difficulty': 'easy'
+                    },
+                    {
                         'question': 'What does the fundamental theorem of calculus connect?',
                         'options': ['Addition and subtraction', 'Multiplication and division', 
                                   'Differentiation and integration', 'Algebra and geometry'],
                         'correct': 2,
                         'difficulty': 'medium'
+                    },
+                    {
+                        'question': 'Find the derivative of sin(x)cos(x)',
+                        'options': ['cos²(x) - sin²(x)', 'sin(x) + cos(x)', 'cos(2x)', 'sin(2x)'],
+                        'correct': 0,
+                        'difficulty': 'hard'
                     }
                 ],
                 'Statistics': [
@@ -87,10 +111,22 @@ class QuizGenerator:
                         'difficulty': 'easy'
                     },
                     {
+                        'question': 'What is the acceleration due to gravity on Earth?',
+                        'options': ['9.8 m/s²', '10 m/s²', '8.9 m/s²', '11 m/s²'],
+                        'correct': 0,
+                        'difficulty': 'easy'
+                    },
+                    {
                         'question': 'If a ball is thrown horizontally, what is its initial vertical velocity?',
                         'options': ['Maximum', 'Minimum', 'Zero', 'Cannot be determined'],
                         'correct': 2,
                         'difficulty': 'medium'
+                    },
+                    {
+                        'question': 'A car accelerates from 0 to 60 mph in 6 seconds. What is its acceleration?',
+                        'options': ['10 mph/s', '6 mph/s', '60 mph/s', '360 mph/s'],
+                        'correct': 0,
+                        'difficulty': 'hard'
                     }
                 ],
                 'Thermodynamics': [
@@ -285,7 +321,10 @@ class QuizGenerator:
         # Collect all questions for the subject
         all_questions = []
         for topic in self.quiz_data[subject]:
-            all_questions.extend(self.quiz_data[subject][topic])
+            for question in self.quiz_data[subject][topic]:
+                # Make a copy to avoid modifying the original
+                question_copy = question.copy()
+                all_questions.append(question_copy)
         
         # Randomly select questions
         selected_questions = random.sample(
@@ -293,18 +332,36 @@ class QuizGenerator:
             min(num_questions, len(all_questions))
         )
         
-        # Predict difficulty if model is trained
-        if self.difficulty_model and self.vectorizer:
-            for question in selected_questions:
-                question_vector = self.vectorizer.transform([question['question']])
-                predicted_difficulty = self.difficulty_model.predict(question_vector)[0]
-                question['predicted_difficulty'] = predicted_difficulty
+        # Ensure each question has a difficulty level
+        for question in selected_questions:
+            # First, use the predefined difficulty from the database
+            if 'difficulty' in question:
+                question['predicted_difficulty'] = question['difficulty']
+            else:
+                # Fallback to a default difficulty
+                question['predicted_difficulty'] = 'medium'
+            
+            # Try to predict difficulty if model is trained and available
+            if self.difficulty_model and self.vectorizer:
+                try:
+                    question_vector = self.vectorizer.transform([question['question']])
+                    predicted_difficulty = self.difficulty_model.predict(question_vector)[0]
+                    question['predicted_difficulty'] = predicted_difficulty
+                    print(f"✓ Predicted difficulty for question: {predicted_difficulty}")
+                except Exception as e:
+                    print(f"⚠️ Could not predict difficulty: {e}")
+                    # Keep the predefined or default difficulty
+                    pass
         
         quiz_result = {
             'subject': subject,
             'total_questions': len(selected_questions),
             'questions': selected_questions
         }
+        
+        print(f"✓ Generated quiz with {len(selected_questions)} questions")
+        for i, q in enumerate(selected_questions):
+            print(f"  Question {i+1}: {q.get('predicted_difficulty', 'unknown')} difficulty")
         
         return quiz_result
     

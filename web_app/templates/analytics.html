@@ -421,6 +421,14 @@ function refreshAnalytics() {
     const refreshModal = new bootstrap.Modal(document.getElementById('refreshModal'));
     refreshModal.show();
     
+    // Add timestamp to force cache refresh
+    const timestamp = new Date().getTime();
+    const images = document.querySelectorAll('img[src*="analytics_image"]');
+    images.forEach(img => {
+        const originalSrc = img.src.split('?')[0]; // Remove existing query params
+        img.src = originalSrc + '?t=' + timestamp;
+    });
+    
     // Reload the page to refresh analytics
     setTimeout(() => {
         window.location.reload();
@@ -432,11 +440,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const images = document.querySelectorAll('img[src*="analytics_image"]');
     images.forEach(img => {
         img.addEventListener('error', function() {
-            // Try to reload the image after a short delay
+            // Try to reload the image after a short delay with new timestamp
             setTimeout(() => {
-                this.src = this.src + '?t=' + new Date().getTime();
+                const timestamp = new Date().getTime();
+                const originalSrc = this.src.split('?')[0];
+                this.src = originalSrc + '?t=' + timestamp;
             }, 2000);
         });
+    });
+    
+    // Force refresh images on page load
+    const timestamp = new Date().getTime();
+    images.forEach(img => {
+        const originalSrc = img.src.split('?')[0];
+        img.src = originalSrc + '?t=' + timestamp;
     });
 });
 </script>

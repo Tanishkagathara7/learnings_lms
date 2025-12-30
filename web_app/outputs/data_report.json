@@ -1,0 +1,44 @@
+{
+  "generation_timestamp": "2025-12-30T21:56:57.305736",
+  "dataset_overview": {
+    "total_records": 15,
+    "total_subjects": 5,
+    "total_topics": 15,
+    "data_sources": {
+      "original": 15
+    }
+  },
+  "subject_analysis": {
+    "distribution": {
+      "Mathematics": 3,
+      "Physics": 3,
+      "Chemistry": 3,
+      "Biology": 3,
+      "Computer Science": 3
+    },
+    "topics_per_subject": {
+      "Biology": 3,
+      "Chemistry": 3,
+      "Computer Science": 3,
+      "Mathematics": 3,
+      "Physics": 3
+    },
+    "avg_text_length_per_subject": {
+      "Biology": 230.66666666666666,
+      "Chemistry": 255.33333333333334,
+      "Computer Science": 252.33333333333334,
+      "Mathematics": 321.0,
+      "Physics": 280.6666666666667
+    }
+  },
+  "content_statistics": {
+    "avg_text_length": 268.0,
+    "avg_word_count": 38.666666666666664,
+    "text_length_distribution": {
+      "min": "208",
+      "max": "329",
+      "median": 266.0,
+      "std": 34.67811166386412
+    }
+  }
+}

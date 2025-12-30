@@ -88,14 +88,32 @@ def process_study_request():
         # Train ML models if not already trained
         try:
             quiz_generator.load_models()
+            print("✓ Models loaded successfully")
         except:
-            quiz_generator.train_difficulty_classifier()
+            print("⚠️ Models not found, training new models...")
+            # Train difficulty classifier
+            difficulty_metrics = quiz_generator.train_difficulty_classifier()
+            print(f"✓ Difficulty classifier trained with accuracy: {difficulty_metrics['accuracy']:.3f}")
+            
+            # Train topic clustering if we have content
             if subject_content:
-                quiz_generator.train_topic_clustering(subject_content)
+                cluster_info = quiz_generator.train_topic_clustering(subject_content)
+                print(f"✓ Topic clustering completed")
+            
+            # Save the trained models
             quiz_generator.save_models()
+            print("✓ Models saved successfully")
         
         quiz = quiz_generator.generate_quiz(subject, num_questions=5)
         app_results['quiz'] = quiz
+        
+        if quiz:
+            print(f"✓ Generated quiz with {len(quiz['questions'])} questions")
+            for i, q in enumerate(quiz['questions']):
+                difficulty = q.get('predicted_difficulty', 'unknown')
+                print(f"  Question {i+1}: {difficulty} difficulty")
+        else:
+            print("⚠️ Failed to generate quiz")
         
         # 3. Generate Text Summary
         if subject_content and len(subject_content) > 0:
@@ -206,6 +224,10 @@ def check_quiz_answers():
 def data_analytics():
     """Data analytics dashboard showing EDA visualizations"""
     try:
+        # Set matplotlib to use non-interactive backend for web apps
+        import matplotlib
+        matplotlib.use('Agg')  # Use non-interactive backend
+        
         # Generate fresh analytics
         data_processor.load_data(include_wikipedia=False)  # Skip Wikipedia for faster loading
         cleaned_data = data_processor.preprocess_data()
@@ -219,12 +241,19 @@ def data_analytics():
         # Generate comprehensive report
         report = data_processor.generate_data_report()
         
+        # Add timestamp for cache busting
+        import time
+        timestamp = int(time.time())
+        
         return render_template('analytics.html', 
                              eda_results=eda_results,
                              behavior_insights=behavior_insights,
-                             report=report)
+                             report=report,
+                             timestamp=timestamp)
     except Exception as e:
         print(f"Error in data analytics: {e}")
+        import traceback
+        traceback.print_exc()
         return render_template('analytics.html', 
                              error=f"Error generating analytics: {str(e)}")
 
@@ -234,11 +263,52 @@ def serve_analytics_image(image_name):
     try:
         image_path = os.path.join('..', 'outputs', image_name)
         if os.path.exists(image_path):
-            return send_file(image_path, mimetype='image/png')
+            # Add cache-busting headers
+            from flask import make_response
+            response = make_response(send_file(image_path, mimetype='image/png'))
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
+            return response
         else:
             return "Image not found", 404
     except Exception as e:
         return f"Error serving image: {str(e)}", 500
+
+@app.route('/debug_quiz/<subject>')
+def debug_quiz(subject):
+    """Debug route to test quiz generation"""
+    try:
+        # Force retrain the model
+        quiz_generator.train_difficulty_classifier()
+        
+        # Generate quiz
+        quiz = quiz_generator.generate_quiz(subject, num_questions=3)
+        
+        return jsonify({
+            'success': True,
+            'quiz': quiz,
+            'debug_info': {
+                'model_trained': quiz_generator.difficulty_model is not None,
+                'vectorizer_ready': quiz_generator.vectorizer is not None,
+                'questions_with_difficulty': [
+                    {
+                        'question': q['question'][:50] + '...',
+                        'predicted_difficulty': q.get('predicted_difficulty', 'missing'),
+                        'original_difficulty': q.get('difficulty', 'missing')
+                    } for q in quiz['questions']
+                ] if quiz else []
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'debug_info': {
+                'model_trained': quiz_generator.difficulty_model is not None,
+                'vectorizer_ready': quiz_generator.vectorizer is not None
+            }
+        })
 
 @app.route('/about')
 def about():
