@@ -17,26 +17,45 @@
 
         <!-- Features Overview -->
         <div class="row mb-5">
-            <div class="col-md-4 text-center mb-3">
+            <div class="col-md-3 text-center mb-3">
                 <div class="feature-icon">
                     <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
                 </div>
                 <h5>Smart Study Plans</h5>
                 <p class="text-muted">AI-generated personalized study schedules</p>
             </div>
-            <div class="col-md-4 text-center mb-3">
+            <div class="col-md-3 text-center mb-3">
                 <div class="feature-icon">
                     <i class="fas fa-question-circle fa-3x text-success mb-3"></i>
                 </div>
                 <h5>Intelligent Quizzes</h5>
                 <p class="text-muted">ML-powered quiz generation and difficulty assessment</p>
             </div>
-            <div class="col-md-4 text-center mb-3">
+            <div class="col-md-3 text-center mb-3">
                 <div class="feature-icon">
                     <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
                 </div>
                 <h5>Study Tips</h5>
                 <p class="text-muted">NLP-based contextual learning recommendations</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                </div>
+                <h5>Data Analytics</h5>
+                <p class="text-muted">Comprehensive learning analytics and insights</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('data_analytics') }}" class="btn btn-outline-info me-3">
+                    <i class="fas fa-chart-line me-2"></i>View Analytics Dashboard
+                </a>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-info-circle me-2"></i>Learn More
+                </a>
             </div>
         </div>
 

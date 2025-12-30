@@ -276,8 +276,121 @@ footer {
     }
 }
 
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -10px, 0);
+    }
+    70% {
+        transform: translate3d(0, -5px, 0);
+    }
+    90% {
+        transform: translate3d(0, -2px, 0);
+    }
+}
+
+@keyframes celebration {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(5deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(3deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
 .fade-in-up {
     animation: fadeInUp 0.6s ease-out;
+}
+
+.pulse-animation {
+    animation: pulse 1s ease-in-out;
+}
+
+.bounce-animation {
+    animation: bounce 1s ease-in-out;
+}
+
+.celebration-animation {
+    animation: celebration 0.8s ease-in-out;
+}
+
+/* Quiz Results Enhancements */
+.quiz-results-container {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.quiz-score-card {
+    transition: all 0.3s ease;
+}
+
+.quiz-score-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.bg-light-success {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+    border: 1px solid rgba(40, 167, 69, 0.2) !important;
+}
+
+.bg-light-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    border: 1px solid rgba(220, 53, 69, 0.2) !important;
+}
+
+.encouragement-message {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.quiz-celebration {
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-celebration::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 /* Utility Classes */

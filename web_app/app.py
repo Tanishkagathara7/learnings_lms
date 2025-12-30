@@ -202,12 +202,48 @@ def check_quiz_answers():
     except Exception as e:
         return jsonify({'error': f'Error checking answers: {str(e)}'}), 500
 
+@app.route('/data_analytics')
+def data_analytics():
+    """Data analytics dashboard showing EDA visualizations"""
+    try:
+        # Generate fresh analytics
+        data_processor.load_data(include_wikipedia=False)  # Skip Wikipedia for faster loading
+        cleaned_data = data_processor.preprocess_data()
+        
+        # Perform EDA and generate visualizations
+        eda_results = data_processor.perform_eda(save_plots=True)
+        
+        # Analyze user behavior if data exists
+        behavior_insights = data_processor.analyze_user_behavior()
+        
+        # Generate comprehensive report
+        report = data_processor.generate_data_report()
+        
+        return render_template('analytics.html', 
+                             eda_results=eda_results,
+                             behavior_insights=behavior_insights,
+                             report=report)
+    except Exception as e:
+        print(f"Error in data analytics: {e}")
+        return render_template('analytics.html', 
+                             error=f"Error generating analytics: {str(e)}")
+
+@app.route('/analytics_image/<image_name>')
+def serve_analytics_image(image_name):
+    """Serve analytics images from outputs directory"""
+    try:
+        image_path = os.path.join('..', 'outputs', image_name)
+        if os.path.exists(image_path):
+            return send_file(image_path, mimetype='image/png')
+        else:
+            return "Image not found", 404
+    except Exception as e:
+        return f"Error serving image: {str(e)}", 500
+
 @app.route('/about')
 def about():
     """About page with project information"""
     return render_template('about.html')
-
-@app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
 

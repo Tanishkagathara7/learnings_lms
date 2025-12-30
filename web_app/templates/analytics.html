@@ -1,0 +1,443 @@
+{% extends "base.html" %}
+
+{% block title %}Data Analytics - AI Study Pal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="text-primary">
+                    <i class="fas fa-chart-bar me-2"></i>Data Analytics Dashboard
+                </h2>
+                <p class="text-muted mb-0">
+                    Comprehensive analysis of educational content and user behavior patterns
+                </p>
+            </div>
+            <div>
+                <button class="btn btn-success" onclick="refreshAnalytics()">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh Data
+                </button>
+                <a href="{{ url_for('home') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-home me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+        </div>
+        {% else %}
+
+        <!-- Analytics Overview Cards -->
+        {% if eda_results %}
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center bg-primary text-white">
+                    <div class="card-body">
+                        <i class="fas fa-database fa-2x mb-2"></i>
+                        <h4>{{ eda_results.total_records }}</h4>
+                        <small>Total Records</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-success text-white">
+                    <div class="card-body">
+                        <i class="fas fa-book fa-2x mb-2"></i>
+                        <h4>{{ eda_results.subjects|length }}</h4>
+                        <small>Subjects</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-info text-white">
+                    <div class="card-body">
+                        <i class="fas fa-file-alt fa-2x mb-2"></i>
+                        <h4>{{ "%.0f"|format(eda_results.avg_text_length) }}</h4>
+                        <small>Avg Characters</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-warning text-white">
+                    <div class="card-body">
+                        <i class="fas fa-font fa-2x mb-2"></i>
+                        <h4>{{ "%.1f"|format(eda_results.avg_word_count) }}</h4>
+                        <small>Avg Words</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Tabs for different analytics sections -->
+        <ul class="nav nav-tabs" id="analyticsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="eda-tab" data-bs-toggle="tab" data-bs-target="#eda" type="button">
+                    <i class="fas fa-chart-pie me-1"></i>Data Analysis
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="behavior-tab" data-bs-toggle="tab" data-bs-target="#behavior" type="button">
+                    <i class="fas fa-users me-1"></i>User Behavior
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="insights-tab" data-bs-toggle="tab" data-bs-target="#insights" type="button">
+                    <i class="fas fa-lightbulb me-1"></i>Insights
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="analyticsTabsContent">
+            <!-- EDA Tab -->
+            <div class="tab-pane fade show active" id="eda" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-area me-2"></i>Comprehensive Data Analysis
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="{{ url_for('serve_analytics_image', image_name='comprehensive_data_analysis.png') }}" 
+                                 class="img-fluid rounded shadow" 
+                                 alt="Comprehensive Data Analysis"
+                                 style="max-width: 100%; height: auto;"
+                                 onerror="this.style.display='none'; document.getElementById('eda-error').style.display='block';">
+                            <div id="eda-error" style="display: none;" class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                EDA visualization not available. Click "Refresh Data" to generate new analytics.
+                            </div>
+                        </div>
+                        
+                        {% if eda_results %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-list me-2"></i>Subject Distribution</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Records</th>
+                                                <th>Topics</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for subject in eda_results.subjects %}
+                                            <tr>
+                                                <td>{{ subject }}</td>
+                                                <td>{{ eda_results.subject_distribution[subject] }}</td>
+                                                <td>{{ eda_results.topic_counts[subject] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-tags me-2"></i>Most Common Keywords</h6>
+                                {% if eda_results.most_common_words %}
+                                <div class="d-flex flex-wrap">
+                                    {% for word, count in eda_results.most_common_words %}
+                                    <span class="badge bg-primary me-2 mb-2">{{ word }} ({{ count }})</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="text-muted">No keyword data available</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Behavior Tab -->
+            <div class="tab-pane fade" id="behavior" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-chart me-2"></i>User Behavior Analysis
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if behavior_insights %}
+                        <!-- Behavior Overview Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card text-center bg-info text-white">
+                                    <div class="card-body">
+                                        <i class="fas fa-user-clock fa-2x mb-2"></i>
+                                        <h4>{{ behavior_insights.total_sessions }}</h4>
+                                        <small>Total Sessions</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-success text-white">
+                                    <div class="card-body">
+                                        <i class="fas fa-books fa-2x mb-2"></i>
+                                        <h4>{{ behavior_insights.unique_subjects }}</h4>
+                                        <small>Subjects Explored</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-warning text-white">
+                                    <div class="card-body">
+                                        <i class="fas fa-clock fa-2x mb-2"></i>
+                                        <h4>{{ "%.1f"|format(behavior_insights.avg_study_hours) }}h</h4>
+                                        <small>Avg Study Time</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card text-center bg-danger text-white">
+                                    <div class="card-body">
+                                        <i class="fas fa-star fa-2x mb-2"></i>
+                                        <h4>{{ behavior_insights.most_popular_subject or 'N/A' }}</h4>
+                                        <small>Top Subject</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavior Visualization -->
+                        <div class="text-center mb-4">
+                            <img src="{{ url_for('serve_analytics_image', image_name='user_behavior_analysis.png') }}" 
+                                 class="img-fluid rounded shadow" 
+                                 alt="User Behavior Analysis"
+                                 style="max-width: 100%; height: auto;"
+                                 onerror="this.style.display='none'; document.getElementById('behavior-error').style.display='block';">
+                            <div id="behavior-error" style="display: none;" class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                User behavior visualization not available. More user data needed for analysis.
+                            </div>
+                        </div>
+
+                        <!-- Subject Preferences -->
+                        {% if behavior_insights.subject_preferences %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-heart me-2"></i>Subject Preferences</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Sessions</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for subject, count in behavior_insights.subject_preferences.items() %}
+                                            <tr>
+                                                <td>{{ subject }}</td>
+                                                <td>{{ count }}</td>
+                                                <td>{{ "%.1f"|format((count / behavior_insights.total_sessions) * 100) }}%</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-line me-2"></i>Study Hours Statistics</h6>
+                                {% if behavior_insights.study_hours_distribution %}
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Average:</span>
+                                        <strong>{{ "%.1f"|format(behavior_insights.study_hours_distribution.mean) }}h</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Minimum:</span>
+                                        <strong>{{ "%.1f"|format(behavior_insights.study_hours_distribution.min) }}h</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Maximum:</span>
+                                        <strong>{{ "%.1f"|format(behavior_insights.study_hours_distribution.max) }}h</strong>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Standard Deviation:</span>
+                                        <strong>{{ "%.1f"|format(behavior_insights.study_hours_distribution.std) }}h</strong>
+                                    </li>
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% else %}
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-info-circle fa-2x mb-3"></i>
+                            <h5>No User Behavior Data Available</h5>
+                            <p class="mb-0">Start using the study planner to generate user behavior analytics!</p>
+                            <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">
+                                <i class="fas fa-plus me-2"></i>Create Study Plan
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Tab -->
+            <div class="tab-pane fade" id="insights" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>AI-Generated Insights
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if report %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0"><i class="fas fa-database me-2"></i>Dataset Quality</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Total Records:</span>
+                                                <strong>{{ report.dataset_overview.total_records }}</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Subjects:</span>
+                                                <strong>{{ report.dataset_overview.total_subjects }}</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Topics:</span>
+                                                <strong>{{ report.dataset_overview.total_topics }}</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Avg Text Length:</span>
+                                                <strong>{{ "%.0f"|format(report.content_statistics.avg_text_length) }} chars</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Content Statistics</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Avg Words:</span>
+                                                <strong>{{ "%.1f"|format(report.content_statistics.avg_word_count) }}</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Min Length:</span>
+                                                <strong>{{ report.content_statistics.text_length_distribution.min }} chars</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Max Length:</span>
+                                                <strong>{{ report.content_statistics.text_length_distribution.max }} chars</strong>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between">
+                                                <span>Std Deviation:</span>
+                                                <strong>{{ "%.1f"|format(report.content_statistics.text_length_distribution.std) }}</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-4 border-info">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Key Insights</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>📚 Content Distribution:</h6>
+                                        <ul class="list-unstyled">
+                                            {% for subject, count in report.subject_analysis.distribution.items() %}
+                                            <li><i class="fas fa-arrow-right text-primary me-2"></i>{{ subject }}: {{ count }} records</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>🎯 Recommendations:</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="fas fa-check text-success me-2"></i>Dataset is well-balanced across subjects</li>
+                                            <li><i class="fas fa-check text-success me-2"></i>Content length is appropriate for learning</li>
+                                            <li><i class="fas fa-info text-info me-2"></i>Consider adding more advanced topics</li>
+                                            <li><i class="fas fa-info text-info me-2"></i>User engagement is growing steadily</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <div class="alert alert-warning text-center">
+                            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                            <h5>No Analytics Report Available</h5>
+                            <p class="mb-0">Click "Refresh Data" to generate comprehensive insights.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="refreshModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5>Refreshing Analytics...</h5>
+                <p class="text-muted mb-0">
+                    Analyzing data and generating fresh visualizations
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function refreshAnalytics() {
+    // Show loading modal
+    const refreshModal = new bootstrap.Modal(document.getElementById('refreshModal'));
+    refreshModal.show();
+    
+    // Reload the page to refresh analytics
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
+}
+
+// Auto-refresh images if they fail to load initially
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img[src*="analytics_image"]');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            // Try to reload the image after a short delay
+            setTimeout(() => {
+                this.src = this.src + '?t=' + new Date().getTime();
+            }, 2000);
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -346,36 +346,271 @@ function displayQuizResults(data) {
     const resultsDiv = document.getElementById('quizResults');
     const scorePercentage = Math.round(data.score * 100);
     
+    // Generate encouraging message based on performance
+    let encouragementMessage = '';
+    let alertClass = '';
+    let icon = '';
+    let celebrationClass = '';
+    
+    if (scorePercentage >= 90) {
+        alertClass = 'success';
+        icon = 'fas fa-trophy';
+        celebrationClass = 'quiz-celebration celebration-animation';
+        encouragementMessage = '🎉 Outstanding! You\'re a true scholar! Your dedication to learning is truly inspiring. Keep up this excellent work!';
+    } else if (scorePercentage >= 80) {
+        alertClass = 'success';
+        icon = 'fas fa-star';
+        celebrationClass = 'bounce-animation';
+        encouragementMessage = '⭐ Excellent work! You have a strong grasp of the material. You\'re well on your way to mastering this subject!';
+    } else if (scorePercentage >= 70) {
+        alertClass = 'info';
+        icon = 'fas fa-thumbs-up';
+        celebrationClass = 'pulse-animation';
+        encouragementMessage = '👍 Great job! You\'re doing well and showing good understanding. A little more practice and you\'ll be an expert!';
+    } else if (scorePercentage >= 60) {
+        alertClass = 'warning';
+        icon = 'fas fa-lightbulb';
+        encouragementMessage = '💡 Good effort! You\'re on the right track. Review the topics you missed and try again - you\'ve got this!';
+    } else if (scorePercentage >= 50) {
+        alertClass = 'warning';
+        icon = 'fas fa-heart';
+        encouragementMessage = '❤️ Don\'t give up! Learning is a journey, and every step counts. Review the material and keep practicing - you\'re improving!';
+    } else {
+        alertClass = 'info';
+        icon = 'fas fa-seedling';
+        encouragementMessage = '🌱 Every expert was once a beginner! This is just the start of your learning journey. Review the concepts and try again - you\'ll be amazed at your progress!';
+    }
+    
     let html = `
-        <div class="alert alert-${scorePercentage >= 70 ? 'success' : scorePercentage >= 50 ? 'warning' : 'danger'}">
-            <h5><i class="fas fa-chart-bar me-2"></i>Quiz Results</h5>
-            <p class="mb-0">
-                Score: ${data.correct_count}/${data.total_questions} (${scorePercentage}%)
-            </p>
-        </div>
-        
-        <div class="results-breakdown">
-            <h6>Answer Breakdown:</h6>
+        <div class="quiz-results-container">
+            <div class="alert alert-${alertClass} text-center mb-4 ${celebrationClass}">
+                <i class="${icon} fa-3x mb-3"></i>
+                <h4>Quiz Complete!</h4>
+                <div class="row justify-content-center mb-3">
+                    <div class="col-auto">
+                        <div class="display-4 fw-bold">${scorePercentage}%</div>
+                        <div class="text-muted">Your Score</div>
+                    </div>
+                </div>
+                <p class="mb-0 encouragement-message">${encouragementMessage}</p>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-center bg-success text-white quiz-score-card">
+                        <div class="card-body">
+                            <i class="fas fa-check-circle fa-2x mb-2"></i>
+                            <h3>${data.correct_count}</h3>
+                            <small>Correct Answers</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center bg-danger text-white quiz-score-card">
+                        <div class="card-body">
+                            <i class="fas fa-times-circle fa-2x mb-2"></i>
+                            <h3>${data.total_questions - data.correct_count}</h3>
+                            <small>Incorrect Answers</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center bg-primary text-white quiz-score-card">
+                        <div class="card-body">
+                            <i class="fas fa-chart-line fa-2x mb-2"></i>
+                            <h3>${data.total_questions}</h3>
+                            <small>Total Questions</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-list-check me-2"></i>Detailed Answer Review</h6>
+                </div>
+                <div class="card-body">
     `;
     
     data.results.forEach((result, index) => {
         const icon = result.is_correct ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
+        const bgClass = result.is_correct ? 'bg-light-success' : 'bg-light-danger';
+        
         html += `
-            <div class="d-flex align-items-center mb-2">
-                <i class="${icon} me-2"></i>
-                <span>Question ${index + 1}: ${result.is_correct ? 'Correct' : 'Incorrect'}</span>
-                ${!result.is_correct ? `<small class="text-muted ms-2">(Correct answer: ${result.correct_option})</small>` : ''}
+            <div class="d-flex align-items-center mb-3 p-3 rounded ${bgClass}">
+                <i class="${icon} fa-lg me-3"></i>
+                <div class="flex-grow-1">
+                    <strong>Question ${index + 1}:</strong> 
+                    <span class="badge ${result.is_correct ? 'bg-success' : 'bg-danger'} ms-2">
+                        ${result.is_correct ? 'Correct ✓' : 'Incorrect ✗'}
+                    </span>
+                    ${!result.is_correct ? `
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="fas fa-arrow-right me-1"></i>
+                                Correct answer: <strong class="text-success">${result.correct_option}</strong>
+                            </small>
+                        </div>
+                    ` : `
+                        <div class="mt-1">
+                            <small class="text-success">
+                                <i class="fas fa-check me-1"></i>Well done!
+                            </small>
+                        </div>
+                    `}
+                </div>
             </div>
         `;
     });
     
-    html += '</div>';
+    html += `
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-lg w-100" onclick="retakeQuiz()">
+                        <i class="fas fa-redo me-2"></i>Try Again & Improve
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <a href="${window.location.origin}" class="btn btn-success btn-lg w-100">
+                        <i class="fas fa-plus me-2"></i>Create New Study Plan
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Personalized Study Tips</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">📚 For Better Results:</h6>
+                            <ul class="list-unstyled">
+                                ${scorePercentage < 70 ? `
+                                    <li><i class="fas fa-arrow-right text-primary me-2"></i>Review the topics you missed carefully</li>
+                                    <li><i class="fas fa-arrow-right text-primary me-2"></i>Create flashcards for key concepts</li>
+                                    <li><i class="fas fa-arrow-right text-primary me-2"></i>Practice with similar questions</li>
+                                    <li><i class="fas fa-arrow-right text-primary me-2"></i>Take breaks between study sessions</li>
+                                ` : `
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>Excellent! Keep practicing regularly</li>
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>Try teaching concepts to others</li>
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>Challenge yourself with advanced topics</li>
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>Maintain consistent study habits</li>
+                                `}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-info">🎯 Next Steps:</h6>
+                            <div class="alert alert-light">
+                                ${scorePercentage >= 80 ? 
+                                    `<strong>Amazing work!</strong> You're ready to move on to more advanced topics. Consider exploring related subjects or diving deeper into complex concepts.` :
+                                    scorePercentage >= 60 ?
+                                    `<strong>Good progress!</strong> Focus on the areas you missed and try the quiz again. You're on the right track!` :
+                                    `<strong>Keep going!</strong> Learning takes time and practice. Review the material, take notes, and don't hesitate to try again. Every attempt makes you stronger!`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
     
     resultsDiv.innerHTML = html;
     resultsDiv.style.display = 'block';
     
-    // Scroll to results
-    resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    // Scroll to results with smooth animation
+    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    // Show motivational popup for high scores
+    if (scorePercentage >= 90) {
+        setTimeout(() => {
+            showCelebrationModal(scorePercentage);
+        }, 1000);
+    }
+}
+
+function showCelebrationModal(score) {
+    const modalHtml = `
+        <div class="modal fade" id="celebrationModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-5">
+                        <i class="fas fa-trophy fa-4x text-warning mb-3 celebration-animation"></i>
+                        <h3 class="text-primary mb-3">Congratulations!</h3>
+                        <p class="lead mb-4">You scored ${score}%! You're truly mastering this subject!</p>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary me-2" data-bs-dismiss="modal">
+                                <i class="fas fa-smile me-2"></i>Thank You!
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="shareSuccess(${score})" data-bs-dismiss="modal">
+                                <i class="fas fa-share me-2"></i>Share Success
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('celebrationModal'));
+    modal.show();
+    
+    // Remove modal after it's hidden
+    document.getElementById('celebrationModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
+function shareSuccess(score) {
+    const text = `I just scored ${score}% on my AI Study Pal quiz! 🎉 #AIStudyPal #Learning`;
+    if (navigator.share) {
+        navigator.share({
+            title: 'AI Study Pal Success',
+            text: text,
+            url: window.location.href
+        });
+    } else {
+        // Fallback - copy to clipboard
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Success message copied to clipboard!');
+        });
+    }
+}
+
+function retakeQuiz() {
+    // Reset the quiz form
+    const form = document.getElementById('quizForm');
+    const inputs = form.querySelectorAll('input[type="radio"]');
+    inputs.forEach(input => input.checked = false);
+    
+    // Hide results
+    document.getElementById('quizResults').style.display = 'none';
+    
+    // Scroll back to quiz
+    form.scrollIntoView({ behavior: 'smooth' });
+    
+    // Show encouraging message
+    const tempAlert = document.createElement('div');
+    tempAlert.className = 'alert alert-info alert-dismissible fade show fade-in-up';
+    tempAlert.innerHTML = `
+        <i class="fas fa-rocket me-2"></i>
+        <strong>Ready for round two?</strong> You've got this! Take your time and think through each question carefully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    form.parentNode.insertBefore(tempAlert, form);
+    
+    // Auto-dismiss the alert after 6 seconds
+    setTimeout(() => {
+        if (tempAlert.parentNode) {
+            tempAlert.classList.add('fade');
+            setTimeout(() => tempAlert.remove(), 150);
+        }
+    }, 6000);
 }
 </script>
 {% endblock %}

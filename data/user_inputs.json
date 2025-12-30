@@ -117,5 +117,45 @@
       "Calculus"
     ],
     "timestamp": "2025-12-24T19:32:37.920913"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 3,
+    "selected_topics": [
+      "Algebra",
+      "Calculus"
+    ],
+    "timestamp": "2025-12-30T20:35:21.618669"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 3,
+    "selected_topics": [
+      "Algebra",
+      "Calculus"
+    ],
+    "timestamp": "2025-12-30T20:36:12.536416"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 3,
+    "selected_topics": [],
+    "timestamp": "2025-12-30T20:40:39.565708"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 2.0,
+    "selected_topics": [
+      "Algebra"
+    ],
+    "timestamp": "2025-12-30T20:43:16.830920"
+  },
+  {
+    "subject": "Mathematics",
+    "study_hours": 2.0,
+    "selected_topics": [
+      "Algebra"
+    ],
+    "timestamp": "2025-12-30T20:49:59.127452"
   }
 ]
