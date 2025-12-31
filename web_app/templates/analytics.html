@@ -107,7 +107,7 @@
                                  class="img-fluid rounded shadow" 
                                  alt="Comprehensive Data Analysis"
                                  style="max-width: 100%; height: auto;"
-                                 onerror="this.style.display='none'; document.getElementById('eda-error').style.display='block';">
+                                 onerror="this.style.display='none'; var errorDiv = document.getElementById('eda-error'); if(errorDiv) errorDiv.style.display='block';">
                             <div id="eda-error" style="display: none;" class="alert alert-info mt-3">
                                 <i class="fas fa-info-circle me-2"></i>
                                 EDA visualization not available. Click "Refresh Data" to generate new analytics.
@@ -213,7 +213,7 @@
                                  class="img-fluid rounded shadow" 
                                  alt="User Behavior Analysis"
                                  style="max-width: 100%; height: auto;"
-                                 onerror="this.style.display='none'; document.getElementById('behavior-error').style.display='block';">
+                                 onerror="this.style.display='none'; var errorDiv = document.getElementById('behavior-error'); if(errorDiv) errorDiv.style.display='block';">
                             <div id="behavior-error" style="display: none;" class="alert alert-info mt-3">
                                 <i class="fas fa-info-circle me-2"></i>
                                 User behavior visualization not available. More user data needed for analysis.
@@ -440,6 +440,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const images = document.querySelectorAll('img[src*="analytics_image"]');
     images.forEach(img => {
         img.addEventListener('error', function() {
+            // Hide the image and show error message
+            this.style.display = 'none';
+            
+            // Find and show the corresponding error div
+            const imgSrc = this.src;
+            if (imgSrc.includes('comprehensive_data_analysis')) {
+                const errorDiv = document.getElementById('eda-error');
+                if (errorDiv) errorDiv.style.display = 'block';
+            } else if (imgSrc.includes('user_behavior_analysis')) {
+                const errorDiv = document.getElementById('behavior-error');
+                if (errorDiv) errorDiv.style.display = 'block';
+            }
+            
             // Try to reload the image after a short delay with new timestamp
             setTimeout(() => {
                 const timestamp = new Date().getTime();

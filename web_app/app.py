@@ -261,7 +261,13 @@ def data_analytics():
 def serve_analytics_image(image_name):
     """Serve analytics images from outputs directory"""
     try:
-        image_path = os.path.join('..', 'outputs', image_name)
+        # Get the absolute path to the outputs directory
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        image_path = os.path.join(base_dir, 'outputs', image_name)
+        
+        print(f"🔍 Looking for image at: {image_path}")
+        print(f"🔍 Image exists: {os.path.exists(image_path)}")
+        
         if os.path.exists(image_path):
             # Add cache-busting headers
             from flask import make_response
@@ -269,10 +275,13 @@ def serve_analytics_image(image_name):
             response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
             response.headers['Pragma'] = 'no-cache'
             response.headers['Expires'] = '0'
+            print(f"✓ Serving image: {image_name}")
             return response
         else:
+            print(f"✗ Image not found: {image_path}")
             return "Image not found", 404
     except Exception as e:
+        print(f"✗ Error serving image: {str(e)}")
         return f"Error serving image: {str(e)}", 500
 
 @app.route('/debug_quiz/<subject>')
