@@ -23,12 +23,51 @@ from study_planner import StudyPlanner
 app = Flask(__name__)
 app.secret_key = 'ai_study_pal_secret_key_2024'
 
-# Initialize AI components with correct paths
-data_processor = DataPreprocessor(data_path='../data/educational_content.csv')
-quiz_generator = QuizGenerator()
-text_processor = TextProcessor()
-tips_generator = StudyTipsGenerator()
-study_planner = StudyPlanner()
+# Initialize AI components with error handling
+data_processor = None
+quiz_generator = None
+text_processor = None
+tips_generator = None
+study_planner = None
+
+def initialize_ai_components():
+    """Initialize AI components with error handling"""
+    global data_processor, quiz_generator, text_processor, tips_generator, study_planner
+    
+    try:
+        if data_processor is None:
+            data_processor = DataPreprocessor(data_path='../data/educational_content.csv')
+            print("✓ Data processor initialized")
+    except Exception as e:
+        print(f"⚠ Warning: Could not initialize data processor: {e}")
+        
+    try:
+        if quiz_generator is None:
+            quiz_generator = QuizGenerator()
+            print("✓ Quiz generator initialized")
+    except Exception as e:
+        print(f"⚠ Warning: Could not initialize quiz generator: {e}")
+        
+    try:
+        if text_processor is None:
+            text_processor = TextProcessor()
+            print("✓ Text processor initialized")
+    except Exception as e:
+        print(f"⚠ Warning: Could not initialize text processor: {e}")
+        
+    try:
+        if tips_generator is None:
+            tips_generator = StudyTipsGenerator()
+            print("✓ Tips generator initialized")
+    except Exception as e:
+        print(f"⚠ Warning: Could not initialize tips generator: {e}")
+        
+    try:
+        if study_planner is None:
+            study_planner = StudyPlanner()
+            print("✓ Study planner initialized")
+    except Exception as e:
+        print(f"⚠ Warning: Could not initialize study planner: {e}")
 
 # Global variables to store results
 app_results = {
@@ -44,7 +83,24 @@ app_results = {
 @app.route('/')
 def home():
     """Home page with input form"""
+    # Try to initialize components on first access
+    initialize_ai_components()
     return render_template('index.html')
+
+@app.route('/health')
+def health_check():
+    """Health check endpoint for monitoring"""
+    return {
+        "status": "healthy",
+        "message": "AI Study Pal is running",
+        "components": {
+            "data_processor": data_processor is not None,
+            "quiz_generator": quiz_generator is not None,
+            "text_processor": text_processor is not None,
+            "tips_generator": tips_generator is not None,
+            "study_planner": study_planner is not None
+        }
+    }
 
 @app.route('/process', methods=['POST'])
 def process_study_request():
@@ -335,19 +391,9 @@ if __name__ == '__main__':
     os.makedirs('../outputs', exist_ok=True)
     os.makedirs('../models', exist_ok=True)
     
-    # Initialize data on startup
-    try:
-        print("🚀 Initializing AI Study Pal...")
-        
-        # Load educational data
-        data_processor.load_data()
-        data_processor.preprocess_data()
-        
-        print("✓ AI Study Pal initialized successfully!")
-        print("🌐 Starting web server...")
-        
-    except Exception as e:
-        print(f"⚠ Warning during initialization: {e}")
+    print("🚀 Starting AI Study Pal...")
+    print("🌐 AI components will be initialized on first use")
+    print("🌐 Starting web server...")
     
     # Run the Flask app
     app.run(debug=True, host='0.0.0.0', port=5000)
