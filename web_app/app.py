@@ -10,6 +10,19 @@ import json
 from datetime import datetime
 import traceback
 
+# Download required NLTK data
+import nltk
+try:
+    # Download required NLTK data silently
+    nltk.download('punkt', quiet=True)
+    nltk.download('stopwords', quiet=True)
+    nltk.download('wordnet', quiet=True)
+    nltk.download('averaged_perceptron_tagger', quiet=True)
+    nltk.download('vader_lexicon', quiet=True)
+    print("✓ NLTK data downloaded successfully")
+except Exception as e:
+    print(f"⚠ Warning downloading NLTK data: {e}")
+
 # Add src directory to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
@@ -106,6 +119,9 @@ def health_check():
 def process_study_request():
     """Process the study request and generate all AI outputs"""
     try:
+        # Initialize AI components if not already done
+        initialize_ai_components()
+        
         # Get form data
         subject = request.form.get('subject', '').strip()
         study_hours = float(request.form.get('study_hours', 2))
@@ -123,82 +139,161 @@ def process_study_request():
         app_results['last_hours'] = study_hours
         app_results['selected_topics'] = selected_topics
         
+        # Check if components are available
+        if data_processor is None:
+            return jsonify({'error': 'Data processor not available. Please try again later.'}), 503
+        
         # Save user input with topics
-        data_processor.save_user_input(subject, study_hours, selected_topics)
+        try:
+            data_processor.save_user_input(subject, study_hours, selected_topics)
+        except Exception as e:
+            print(f"Warning saving user input: {e}")
         
         # Load and process educational data
-        data_processor.load_data()
-        cleaned_data = data_processor.preprocess_data()
-        subject_content = data_processor.get_subject_content(subject)
+        try:
+            data_processor.load_data()
+            cleaned_data = data_processor.preprocess_data()
+            subject_content = data_processor.get_subject_content(subject)
+        except Exception as e:
+            print(f"Warning loading data: {e}")
+            subject_content = f"General study content for {subject}"
         
         # 1. Generate Study Plan with topics
-        study_plan = study_planner.create_comprehensive_plan(
-            subject=subject,
-            daily_hours=study_hours,
+        study_plan = None
+        if study_planner is not None:
+            try:
+                study_plan = study_planner.create_comprehensive_plan(
+                    subject=subject,
+                    daily_hours=study_hours,
             scenario=scenario,
             selected_topics=selected_topics
-        )
+            )
+            except Exception as e:
+                print(f"Warning creating study plan: {e}")
+                study_plan = {
+                    'error': 'Study plan generation temporarily unavailable',
+                    'fallback': f"Study {subject} for {study_hours} hours daily"
+                }
+        else:
+            study_plan = {
+                'error': 'Study planner not available',
+                'fallback': f"Study {subject} for {study_hours} hours daily"
+            }
+        
         app_results['study_plan'] = study_plan
         
         # 2. Generate Quiz
-        # Train ML models if not already trained
-        try:
-            quiz_generator.load_models()
-            print("✓ Models loaded successfully")
-        except:
-            print("⚠️ Models not found, training new models...")
-            # Train difficulty classifier
-            difficulty_metrics = quiz_generator.train_difficulty_classifier()
-            print(f"✓ Difficulty classifier trained with accuracy: {difficulty_metrics['accuracy']:.3f}")
-            
-            # Train topic clustering if we have content
-            if subject_content:
-                cluster_info = quiz_generator.train_topic_clustering(subject_content)
-                print(f"✓ Topic clustering completed")
-            
-            # Save the trained models
-            quiz_generator.save_models()
-            print("✓ Models saved successfully")
+        quiz = None
+        if quiz_generator is not None:
+            try:
+                # Train ML models if not already trained
+                try:
+                    quiz_generator.load_models()
+                    print("✓ Models loaded successfully")
+                except:
+                    print("⚠️ Models not found, training new models...")
+                    # Train difficulty classifier
+                    difficulty_metrics = quiz_generator.train_difficulty_classifier()
+                    print(f"✓ Difficulty classifier trained with accuracy: {difficulty_metrics['accuracy']:.3f}")
+                    
+                    # Train topic clustering if we have content
+                    if subject_content:
+                        cluster_info = quiz_generator.train_topic_clustering(subject_content)
+                        print(f"✓ Topic clustering completed")
+                    
+                    # Save the trained models
+                    quiz_generator.save_models()
+                    print("✓ Models saved successfully")
+                
+                quiz = quiz_generator.generate_quiz(subject, num_questions=5)
+                
+                if quiz:
+                    print(f"✓ Generated quiz with {len(quiz['questions'])} questions")
+                    for i, q in enumerate(quiz['questions']):
+                        difficulty = q.get('predicted_difficulty', 'unknown')
+                        print(f"  Question {i+1}: {difficulty} difficulty")
+            except Exception as e:
+                print(f"Warning generating quiz: {e}")
+                quiz = {
+                    'error': 'Quiz generation temporarily unavailable',
+                    'questions': []
+                }
+        else:
+            quiz = {
+                'error': 'Quiz generator not available',
+                'questions': []
+            }
         
-        quiz = quiz_generator.generate_quiz(subject, num_questions=5)
         app_results['quiz'] = quiz
         
-        if quiz:
-            print(f"✓ Generated quiz with {len(quiz['questions'])} questions")
-            for i, q in enumerate(quiz['questions']):
-                difficulty = q.get('predicted_difficulty', 'unknown')
-                print(f"  Question {i+1}: {difficulty} difficulty")
-        else:
-            print("⚠️ Failed to generate quiz")
-        
         # 3. Generate Text Summary
-        if subject_content and len(subject_content) > 0:
-            # Combine text content for summarization
-            combined_text = ' '.join([item['text_content'] for item in subject_content[:3]])
-            
-            # Train text processor if needed
+        summary = None
+        if text_processor is not None:
             try:
-                text_processor.load_models()
-            except:
-                text_processor.train_summarization_model()
-                text_processor.save_models()
-            
-            summary = text_processor.summarize_text(combined_text, max_summary_length=100)
+                if subject_content and len(subject_content) > 0:
+                    # Combine text content for summarization
+                    combined_text = ' '.join([item['text_content'] for item in subject_content[:3]])
+                    
+                    # Train text processor if needed
+                    try:
+                        text_processor.load_models()
+                    except:
+                        text_processor.train_summarization_model()
+                        text_processor.save_models()
+                    
+                    summary = text_processor.summarize_text(combined_text, max_summary_length=100)
+                else:
+                    summary = f"Study {subject} systematically by focusing on core concepts and regular practice."
+            except Exception as e:
+                print(f"Warning generating summary: {e}")
+                summary = f"Study {subject} systematically by focusing on core concepts and regular practice."
         else:
             summary = f"Study {subject} systematically by focusing on core concepts and regular practice."
         
         app_results['summary'] = summary
         
         # 4. Generate Study Tips
-        sample_text = f"Studying {subject} requires understanding fundamental concepts and regular practice."
-        if subject_content:
-            sample_text = subject_content[0]['text_content']
+        study_tips = None
+        if tips_generator is not None:
+            try:
+                sample_text = f"Studying {subject} requires understanding fundamental concepts and regular practice."
+                if subject_content:
+                    sample_text = subject_content[0]['text_content']
+                
+                tips_result = tips_generator.generate_contextual_tips(sample_text, subject, num_tips=5)
+            except Exception as e:
+                print(f"Warning generating study tips: {e}")
+                tips_result = {
+                    'tips': [f"Focus on understanding core {subject} concepts",
+                            f"Practice {subject} problems regularly",
+                            f"Review {subject} materials daily",
+                            f"Create summaries of {subject} topics",
+                            f"Test your {subject} knowledge frequently"],
+                    'error': 'Study tips generation temporarily unavailable'
+                }
+        else:
+            tips_result = {
+                'tips': [f"Focus on understanding core {subject} concepts",
+                        f"Practice {subject} problems regularly",
+                        f"Review {subject} materials daily",
+                        f"Create summaries of {subject} topics",
+                        f"Test your {subject} knowledge frequently"],
+                'error': 'Study tips generator not available'
+            }
         
-        tips_result = tips_generator.generate_contextual_tips(sample_text, subject, num_tips=5)
         app_results['tips'] = tips_result
         
         # 5. Generate Motivational Feedback
-        feedback = text_processor.generate_motivational_feedback(subject, performance_score=0.8)
+        feedback = None
+        if text_processor is not None:
+            try:
+                feedback = text_processor.generate_motivational_feedback(subject, performance_score=0.8)
+            except Exception as e:
+                print(f"Warning generating feedback: {e}")
+                feedback = f"Great job studying {subject}! Keep up the consistent effort and you'll see excellent results."
+        else:
+            feedback = f"Great job studying {subject}! Keep up the consistent effort and you'll see excellent results."
+        
         app_results['feedback'] = feedback
         
         return redirect(url_for('results'))
